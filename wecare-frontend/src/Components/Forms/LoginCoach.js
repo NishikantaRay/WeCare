@@ -1,9 +1,10 @@
 import React from 'react'
 import axios from 'axios'
-
+import Coachhome from '../view/Coachhome'
 function LoginCoach() {
   const [coachid, setCoachid] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [userlogin, setUserlogin] = React.useState(false);
   const handellogin = (e) => {
     e.preventDefault();
     console.log(coachid, password);
@@ -14,15 +15,19 @@ function LoginCoach() {
       api_key: "registeruser",
     }).then(res => {
       console.log(res);
-      localStorage.setItem('coachid',coachid );
-      localStorage.setItem('token',res.data.data.token );
+      if(res.data.code==200){
+        localStorage.setItem('coachid',coachid );
+        localStorage.setItem('token',res.data.data.token );
+        setUserlogin(true);
+      }
+      
     }).catch(err => {
       console.log(err);
     })
   }
   return (
     <>
-       <form onSubmit={(e) => {handellogin(e)}}>
+    {!userlogin? <form onSubmit={(e) => {handellogin(e)}}>
     <div className="img-background">
         <br /><br />
         <div className='container'>
@@ -63,7 +68,8 @@ function LoginCoach() {
          
         </div>
       </div>
-    </form>
+    </form>:<Coachhome/>}
+      
 
     </>
 

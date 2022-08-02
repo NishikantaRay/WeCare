@@ -1,6 +1,22 @@
 import React from 'react'
-
+import axios from 'axios';
 export default function CoachviewProfile() {
+    const [coach, setCoach] = React.useState([])
+  // const [coachId, setCoachId] = React.useState('')
+  const dat=localStorage.getItem('coachid');
+  React.useEffect(() => {
+    axios
+      .post(`http://localhost:4031/api/v1/users/user/coachDetailsbycoachid`,{coachid: dat})
+      .then(res => {
+        console.log(res.data.data)
+        setCoach(res.data.data[0])
+      }
+      )
+      .catch(err => {
+        console.log(err)
+      }
+      )
+  }, [])
     return (
         <div>
             <div className="img-background">
@@ -18,10 +34,10 @@ export default function CoachviewProfile() {
                                         </div>
                                     </div>
                                     <div className="col-md-6">
-                                        <h4 >Coach id:1</h4>
-                                        <h6 >Date of Birth:09-12-2001</h6>
-                                        <h6 >Mobile No:973237293</h6>
-                                        <h6 >Speciality:Confidence</h6>
+                                        <h4 >Coach id:{coach.coachid}</h4>
+                                        <h6 >Date of Birth:{coach.dateofbirth}</h6>
+                                        <h6 >Mobile No:{coach.phoneNumber}</h6>
+                                        <h6 >Speciality:{coach.speciality}</h6>
                                     </div>
                                 </div>
                             </div>
